@@ -11,9 +11,10 @@ using System;
 namespace Fooder.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20180525122846_Photo_Restaurant_Review")]
+    partial class Photo_Restaurant_Review
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,7 +141,7 @@ namespace Fooder.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Fooder.API.Models.User", "User")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

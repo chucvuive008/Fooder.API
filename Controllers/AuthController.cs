@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Fooder.API.Data;
 using Fooder.API.DTOs;
 using Fooder.API.Models;
@@ -17,29 +18,34 @@ namespace Fooder.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        private readonly IMapper _mapper;
+
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
             _config = config;
+            _mapper = mapper;
             _repo = repo;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
         {
-            if (userForRegisterDto.username != "")
-                userForRegisterDto.username = userForRegisterDto.username.ToLower();
+            if (!string.IsNullOrEmpty(userForRegisterDto.Username))
+                userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
-            if (await _repo.UserExist(userForRegisterDto.username))
+            if (await _repo.UserExist(userForRegisterDto.Username))
                 return BadRequest("Username is already taken");
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.username
-            };
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            var createUser = await _repo.Register(userToCreate, userForRegisterDto.password);
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
-            return StatusCode(201);
+            var createUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+
+            var userToReturn = _mapper.Map<UserForDetailDto>(createUser);
+
+            return CreatedAtRoute("GetUser", new {Controller = "Users", id = createUser.Id}, userToReturn);
         }
 
         [HttpPost("login")]
