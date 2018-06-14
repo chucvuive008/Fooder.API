@@ -17,5 +17,8 @@ namespace Fooder.API.Data
          Task<User> GetUser(int id);
          
          Task<Photo> GetPhoto(int id);
+
+         Task<Restaurant> GetRestaurant(int id);
+         
     }
 }

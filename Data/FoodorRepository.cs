@@ -31,6 +31,11 @@ namespace Fooder.API.Data
             return photo;
         }
 
+        public async Task<Restaurant> GetRestaurant(int id)
+        {
+            return await _context.Restaurants.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
         public async Task<IEnumerable<Restaurant>> GetRestaurants()
         {
             var restaurants = await _context.Restaurants.Include(p => p.Photos).OrderByDescending(r => r.Created).ToListAsync();

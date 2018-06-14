@@ -11,6 +11,8 @@ namespace Fooder.API.Helpers
             CreateMap<User, UserForDetailDto>();
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForDetailDto, User>();
+            CreateMap<RestaurantForRegisterDto, Restaurant>();
+            CreateMap<Restaurant, RestaurantForReturnDto>();
         }
     }
 }

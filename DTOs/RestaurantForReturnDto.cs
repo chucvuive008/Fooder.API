@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
+using Fooder.API.Models;
 
-namespace Fooder.API.Models
+namespace Fooder.API.DTOs
 {
-    public class Restaurant
+    public class RestaurantForReturnDto
     {
         public int Id { get; set; }
         public string Name { get; set; } 
         public string Website { get; set; }
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
-        public DateTime Created { get; set; }
         public string Type { get; set; }
         public string Street { get; set; }
         public string Suite { get; set; }
